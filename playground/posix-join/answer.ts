@@ -6,16 +6,19 @@ import path from "path";
  * 工具提示: path.posix.join()
  */
 export function joinPosix(...parts: string[]): string {
+    return path.posix.join(...parts);
 }
 
 /** 最後一個路徑片段（檔名或目錄名）；結尾 `/` 不算。
  * 工具提示: path.posix.basename(filePath)
  * */
 export function posixBasename(filePath: string): string {
+    return path.posix.basename(filePath);
 }
 
 /** 最後一個副檔名（含 `.`）；點檔如 `.gitignore` 回 `""`。
  * 工具提示: path.posix.extname(filePath)
  * */
 export function posixExtname(filePath: string): string {
+    return path.posix.extname(filePath);
 }
