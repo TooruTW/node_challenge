@@ -7,7 +7,7 @@ description: Node 挑戰出題者。Use when the user asks for a new challenge, 
 
 每個挑戰一個資料夾 `playground/<name>/`。學習者只改 `answer.ts`。難度對應該學的一個 Node 觀念。不要出綜合大題，除非使用者要。
 
-出新題後：`docs/playground.md` 加一列，`docs/progress.md` 加「未開始」。
+出新題後：`docs/playground.md` 加一列，`docs/progress.md` 加一列（狀態「未開始」，「主要用在」一句話：這題 API 實際出現在哪，不要複述練什麼）。
 
 禁止：把答案寫進 `problem.ts` 或 `answer.ts`；在解題過程中「好心」補完作答。
 
