@@ -5,6 +5,7 @@
  * 工具提示: process.env
  */
 export function getEnv(name: string): string | undefined {
+  return process.env[name];
 }
 
 /** 變數有設過（含空字串）為 true；沒設過為 false。
@@ -12,10 +13,16 @@ export function getEnv(name: string): string | undefined {
  * 工具提示: process.env
  */
 export function hasEnv(name: string): boolean {
+    return process.env[name] !== undefined;
 }
 
 /** 沒設過才用 fallback；空字串仍算有值，不要改成 fallback。
  * 工具提示: process.env
  */
 export function getEnvOr(name: string, fallback: string): string {
+    const ans = process.env[name]
+    if (ans === undefined) {
+        return fallback;
+    }
+    return ans;
 }
