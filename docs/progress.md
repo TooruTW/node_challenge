@@ -5,3 +5,4 @@
 | posix-join | 已破 | 產出給 Linux、CI、物件儲存用的 `/` 路徑 |
 | cli-args | 已破 | 腳本讀終端打進來的參數與選項 |
 | process-env | 已破 | 讀本機、CI、正式機注入的設定（埠號、密文） |
+| error-code | 未開始 | 開檔失敗時用 ENOENT／EACCES 分流，而不是對 log 訊息做字串匹配 |
