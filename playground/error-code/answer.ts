@@ -5,12 +5,14 @@
  * 工具提示: error.code
  */
 export function getErrorCode(error: unknown): string | undefined {
+  return (error as { code?: string }).code;
 }
 
 /** `error.code` 是否等於給定字串。消息裡碰巧有同樣文字不算。
  * 工具提示: error.code
  */
 export function isErrorCode(error: unknown, code: string): boolean {
+  return (error as { code?: string }).code === code;
 }
 
 /** 讀系統錯誤的開檔路徑。沒有 `path` 則 `undefined`。
@@ -18,4 +20,5 @@ export function isErrorCode(error: unknown, code: string): boolean {
  * 工具提示: error.path
  */
 export function errorPath(error: unknown): string | undefined {
+  return (error as { path?: string }).path;
 }
