@@ -96,21 +96,24 @@ const actionAdd = (input: string) => {
     process.exit(1);
   }
 };
-
 // 讀取所有事項
-const actionReadAll = () =>{
-  try{
-    const data = JSON.parse(fs.readFileSync(dataFilePath, "utf8")) as TodoItem[];
+const actionReadAll = () => {
+  try {
+    const data = JSON.parse(
+      fs.readFileSync(dataFilePath, "utf8"),
+    ) as TodoItem[];
     console.log(styleText("blue", "all todo items: "), data);
   } catch (error) {
     console.log(styleText("red", "read data file failed: "), error);
     process.exit(1);
   }
-}
+};
 // 讀取單一事項
 const actionReadOne = (id: string) => {
-  try{
-    const data = JSON.parse(fs.readFileSync(dataFilePath, "utf8")) as TodoItem[];
+  try {
+    const data = JSON.parse(
+      fs.readFileSync(dataFilePath, "utf8"),
+    ) as TodoItem[];
     const item = data.find((item) => item.id === id);
     if (!item) {
       console.log(styleText("red", "item not found"));
@@ -121,13 +124,34 @@ const actionReadOne = (id: string) => {
     console.log(styleText("red", "read data file failed: "), error);
     process.exit(1);
   }
-}
+};
 // 更新指定事項
-
+const actionUpdate = (id: string, value: string) => {
+  try {
+    const data = JSON.parse(
+      fs.readFileSync(dataFilePath, "utf8"),
+    ) as TodoItem[];
+    const item = data.find((item) => item.id === id);
+    if (!item) {
+      console.log(styleText("red", "item not found"));
+      process.exit(1);
+    }
+    item.value = value;
+    item.updateAt = new Date().toLocaleString();
+    fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
+    console.log(styleText("green", "update item success"));
+    console.log(styleText("blue", "updated todo item: "), item);
+  } catch (error) {
+    console.log(styleText("red", "update item failed: "), error);
+    process.exit(1);
+  }
+};
 // 刪除指定事項
 const actionDelete = (id: string) => {
-  try{
-    const data = JSON.parse(fs.readFileSync(dataFilePath, "utf8")) as TodoItem[];
+  try {
+    const data = JSON.parse(
+      fs.readFileSync(dataFilePath, "utf8"),
+    ) as TodoItem[];
     const item = data.find((item) => item.id === id);
     if (!item) {
       console.log(styleText("red", "item not found"));
@@ -140,7 +164,7 @@ const actionDelete = (id: string) => {
     console.log(styleText("red", "delete item failed: "), error);
     process.exit(1);
   }
-  }
+};
 
 // 清空所有事項
 
@@ -208,6 +232,9 @@ switch (order.action) {
     break;
   case "delete":
     actionDelete(order.id);
+    break;
+  case "update":
+    actionUpdate(order.id, order.value);
     break;
   default:
     console.log("invalid action", order.action);
