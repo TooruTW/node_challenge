@@ -98,7 +98,15 @@ const actionAdd = (input: string) => {
 };
 
 // 讀取所有事項
-
+const actionReadAll = () =>{
+  try{
+    const data = JSON.parse(fs.readFileSync(dataFilePath, "utf8")) as TodoItem[];
+    console.log(styleText("blue", "all todo items: "), data);
+  } catch (error) {
+    console.log(styleText("red", "read data file failed: "), error);
+    process.exit(1);
+  }
+}
 // 讀取單一事項
 
 // 更新指定事項
@@ -162,6 +170,9 @@ const order = {
 switch (order.action) {
   case "add":
     actionAdd(order.value);
+    break;
+  case "read":
+    actionReadAll();
     break;
   default:
     console.log("invalid action", order.action);
