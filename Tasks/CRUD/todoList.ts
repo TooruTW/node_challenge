@@ -51,7 +51,7 @@ const makeSureDataFileWork = () => {
 };
 
 // actions
-const actionsEnum = ["add", "read", "update", "delete"];
+const actionsEnum = ["add", "read", "readOne", "update", "delete"];
 
 // 新增事項
 const actionAdd = (input: string) => {
@@ -108,7 +108,20 @@ const actionReadAll = () =>{
   }
 }
 // 讀取單一事項
-
+const actionReadOne = (id: string) => {
+  try{
+    const data = JSON.parse(fs.readFileSync(dataFilePath, "utf8")) as TodoItem[];
+    const item = data.find((item) => item.id === id);
+    if (!item) {
+      console.log(styleText("red", "item not found"));
+      process.exit(1);
+    }
+    console.log(styleText("blue", "todo item: "), item);
+  } catch (error) {
+    console.log(styleText("red", "read data file failed: "), error);
+    process.exit(1);
+  }
+}
 // 更新指定事項
 
 // 刪除指定事項
@@ -173,6 +186,9 @@ switch (order.action) {
     break;
   case "read":
     actionReadAll();
+    break;
+  case "readOne":
+    actionReadOne(order.id);
     break;
   default:
     console.log("invalid action", order.action);
