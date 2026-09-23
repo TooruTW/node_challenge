@@ -1,3 +1,4 @@
+import { randomInt } from "node:crypto";
 import { parseArgs, styleText } from "node:util";
 import fs from "node:fs";
 
@@ -51,7 +52,7 @@ const makeSureDataFileWork = () => {
 };
 
 // actions
-const actionsEnum = ["add", "read", "readOne", "update", "delete"];
+const actionsEnum = ["add", "read", "update", "delete"];
 
 // 新增事項
 const actionAdd = (input: string) => {
@@ -67,12 +68,15 @@ const actionAdd = (input: string) => {
   console.log(styleText("blue", "add: "), input);
   makeSureDataFileWork();
 
-  const now = new Date();
-  const pad = (n: number) => String(n).padStart(2, "0");
-  const timeStamp = `${now.getFullYear()}${pad(now.getMonth())}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+  const idAlphabet =
+    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const id = Array.from(
+    { length: 6 },
+    () => idAlphabet[randomInt(idAlphabet.length)],
+  ).join("");
 
   const newTodoItem: TodoItem = {
-    id: timeStamp,
+    id,
     value: input,
     createAt: new Date().toLocaleString(),
     updateAt: new Date().toLocaleString(),
@@ -84,7 +88,7 @@ const actionAdd = (input: string) => {
     ) as TodoItem[];
     const isIdExist = data.some((item) => item.id === newTodoItem.id);
     if (isIdExist) {
-      console.log(styleText("red", "you adding too fast, wait for 1 second"));
+      console.log(styleText("red", "id already exists, run add again"));
       process.exit(1);
     }
     data.push(newTodoItem);
@@ -225,10 +229,8 @@ switch (order.action) {
     actionAdd(order.value);
     break;
   case "read":
-    actionReadAll();
-    break;
-  case "readOne":
-    actionReadOne(order.id);
+    if (order.id) actionReadOne(order.id);
+    else actionReadAll();
     break;
   case "delete":
     actionDelete(order.id);
