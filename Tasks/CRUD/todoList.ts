@@ -125,6 +125,22 @@ const actionReadOne = (id: string) => {
 // 更新指定事項
 
 // 刪除指定事項
+const actionDelete = (id: string) => {
+  try{
+    const data = JSON.parse(fs.readFileSync(dataFilePath, "utf8")) as TodoItem[];
+    const item = data.find((item) => item.id === id);
+    if (!item) {
+      console.log(styleText("red", "item not found"));
+      process.exit(1);
+    }
+    const newData = data.filter((item) => item.id !== id);
+    fs.writeFileSync(dataFilePath, JSON.stringify(newData, null, 2));
+    console.log(styleText("green", "delete item success"));
+  } catch (error) {
+    console.log(styleText("red", "delete item failed: "), error);
+    process.exit(1);
+  }
+  }
 
 // 清空所有事項
 
@@ -189,6 +205,9 @@ switch (order.action) {
     break;
   case "readOne":
     actionReadOne(order.id);
+    break;
+  case "delete":
+    actionDelete(order.id);
     break;
   default:
     console.log("invalid action", order.action);
